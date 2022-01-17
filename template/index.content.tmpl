@@ -1,0 +1,11 @@
+{{ define "title" }}japoto{{ end }}
+{{ define "content" }}
+<div>
+{{ range $provider, $show := .Db -}}
+<h2>{{ $provider }}</h2>
+<ol>
+{{ range $showName, $showList := $show -}}
+<li><a href="{{$provider}}/{{$showName}}.html">{{$showName}}</a></li>
+{{ end }}</ol>
+{{ end }}</div>
+{{ end }}

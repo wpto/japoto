@@ -1,0 +1,16 @@
+<!doctype>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
+<link href="{{ .PublicURL }}/style.css" rel="stylesheet"><link rel="icon" type="image/png" href="{{ .PublicURL }}/favicon.png">
+<title>{{template "title" .}}</title>
+</head>
+<body>
+<h1><a href="{{ .PublicURL }}/index.html">japoto</a></h1>
+<main>{{template "content" .}}</main>
+</body>
+</html>

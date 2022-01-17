@@ -1,0 +1,22 @@
+{{define "title" }}japoto/{{ .Provider}}/{{ .ShowName }}{{end}}
+{{define "content"}}
+<h2>{{.Provider}}/{{ .ShowName }}</h2>
+<ul class="ep-list">
+{{ range .Entries }}<li class="ep-list__ep ep" >
+<div class="ep__row ep__row--meta">
+<a href="{{ .URL }}" target="_blank">[{{.MessageId}}]</a>
+<span class="ep__meta">{{.DurationTime}}</span>
+<span class="ep__meta">{{.SizeHuman}}</span>
+</div>
+<div class="ep__row">
+{{.Performer}}
+</div>
+<div class="ep__row">
+{{.Title}}
+</div>
+<div class="ep__row">
+<span class="ep__meta ep__filename">{{.Filename}}</span>
+</div>
+</li>
+{{ end }}</ul>
+{{end}}

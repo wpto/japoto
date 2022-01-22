@@ -10,7 +10,12 @@
 <title>{{template "title" .}}</title>
 </head>
 <body>
-<h1><a href="{{ .PublicURL }}/index.html">japoto</a></h1>
+<h1 class="title">
+<a class="title__link" href="{{ .PublicURL }}/index.html">
+<img class="title__logo" src="{{.PublicURL}}/logo_96.png" alt="logo">
+japoto
+</a>・<a class="title__link" href="{{.PublicURL}}/all.html">all</a>
+</h1>
 <main>{{template "content" .}}</main>
 </body>
 </html>

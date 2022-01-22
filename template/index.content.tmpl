@@ -1,11 +1,17 @@
 {{ define "title" }}japoto{{ end }}
 {{ define "content" }}
-<div>
-{{ range $provider, $show := .Db -}}
-<h2>{{ $provider }}</h2>
-<ol>
-{{ range $showName, $showList := $show -}}
-<li><a href="{{$provider}}/{{$showName}}.html">{{$showName}}</a></li>
-{{ end }}</ol>
+{{- $PublicURL := .PublicURL }}
+<div class="kiosk">
+{{ range $provider, $show := .Recent -}}
+<h2 class="kiosk__title">{{ $provider }}</h2>
+<ul class="kiosk__container">
+{{ range $ep := $show -}}
+<li class="show-card">
+<a class="show-card__container" href="{{$PublicURL}}/{{$provider}}/{{$ep.ProgramName}}.html">
+<img class="show-card__img" src="{{ $PublicURL }}/images/{{$provider}}/{{ $ep.ProgramName }}.jpg">
+<h3 class="show-card__title">{{ $ep.ProgramName }}</h3>
+</a>
+</li>
+{{ end }}</ul>
 {{ end }}</div>
 {{ end }}

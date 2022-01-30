@@ -44,7 +44,7 @@ var matchers = []Matcher{
 	{
 		regexp.MustCompile(`(\d{6})-(\d*?)-(.+?)-(onsen|hibiki)(-p\d+?)?\.mp3`),
 		func(match []string) EpInfo {
-			return EpInfo{match[1], match[2], match[4]}
+			return EpInfo{match[1], match[3], match[4]}
 		},
 	},
 	{

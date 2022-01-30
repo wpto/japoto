@@ -13,6 +13,8 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/pgeowng/japoto/namematch"
 )
 
 type Entry struct {
@@ -35,9 +37,9 @@ const staticPrefix = "./static"
 const outputPrefix = "./public"
 const inputFile = "../japoto-private/japoto.json"
 
-const publicURL = "https://pgeowng.github.io/japoto"
+// const publicURL = "https://pgeowng.github.io/japoto"
 
-// const publicURL = ""
+const publicURL = ""
 
 func main() {
 	data, err := ioutil.ReadFile(inputFile)
@@ -56,34 +58,14 @@ func main() {
 		s[idx].Date = "000000"
 		s[idx].ProgramName = "unknown"
 
-		ok := TryFilenameV5(s[idx].Filename, &s[idx])
-		if !ok {
-			ok = TryFilenameV4(s[idx].Filename, &s[idx])
-			if !ok {
-				ok = TryFilenameV3(s[idx].Filename, &s[idx])
-				if !ok {
-					ok = TryFilenameV2(s[idx].Filename, &s[idx])
-					if !ok {
-						ok = TryFilenameV1(s[idx].Filename, &s[idx])
-						if !ok {
-							ok = TryFilename100man(s[idx].Filename, &s[idx])
-							if !ok {
-								ok = TryFilenameRadista(s[idx].Filename, &s[idx])
-								if !ok {
-									ok = TryFilenamePhyChe(s[idx].Filename, &s[idx])
-									if !ok {
-										ok = TryFilenameAsacoco(s[idx].Filename, &s[idx])
-										if !ok {
-											fmt.Println("not parsed", s[idx].Filename, channelPrefix+fmt.Sprint(s[idx].MessageId))
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+		info, err := namematch.ExtractInfo(s[idx].Filename)
+		if err != nil {
+			log.Fatal(err)
 		}
+
+		s[idx].Date = info.Date
+		s[idx].ProgramName = info.ProgramName
+		s[idx].Provider = info.Provider
 
 		s[idx].URL = channelPrefix + fmt.Sprint(s[idx].MessageId)
 		seconds := s[idx].Duration
@@ -133,6 +115,8 @@ func main() {
 	renderIndex(db)
 	renderAll(db)
 
+	// sc := presenters.ShowContent(s)
+	// presenters.RenderShowContent(sc)
 	for provider := range db {
 		for showName := range db[provider] {
 			renderPage(provider, showName, db[provider][showName])
@@ -162,6 +146,11 @@ func renderAll(db map[string]map[string][]Entry) {
 	alphabet := make(map[string]map[string][]string)
 	for provider, shows := range db {
 		for showName := range shows {
+			// text, err := json.MarshalIndent(shows[showName], "  ", "  ")
+			// if err != nil {
+			// 	log.Fatal(err)
+			// }
+			// fmt.Printf(string(text))
 			letter := string(showName[0])
 			letter = strings.ToLower(letter)
 			if "0" <= letter && letter <= "9" {
@@ -194,7 +183,7 @@ func renderAll(db map[string]map[string][]Entry) {
 func renderIndex(db map[string]map[string][]Entry) {
 	files := []string{
 		"./template/base.layout.tmpl",
-		"./template/index.content.tmpl",
+		"./template/recent.content.tmpl",
 	}
 
 	ts, err := template.ParseFiles(files...)

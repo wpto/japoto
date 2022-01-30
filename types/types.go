@@ -7,12 +7,13 @@ type Entry struct {
 	Duration     int    `json:"duration"`
 	Performer    string `json:"performer"`
 	Filename     string `json:"filename"`
-	Date         string
-	ProgramName  string
-	Provider     string
-	URL          string
-	DurationTime string
-	SizeHuman    string
+	Date         string `json:"date"`
+	ProgramName  string `json:"program_name"`
+	Provider     string `json:"provider"`
+	URL          string `json:"url"`
+	DurationTime string `json:"duration_human"`
+	SizeHuman    string `json:"size_human"`
+	HasImage     bool   `json:"has_image"`
 }
 
 type Source interface {

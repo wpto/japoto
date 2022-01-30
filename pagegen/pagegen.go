@@ -15,7 +15,9 @@ import (
 )
 
 func run(cmd *cobra.Command, args []string) {
-	ff := source.FileSource{}
+	ff := source.FileSource{
+		Srcpath: config.FileSourcePath,
+	}
 	entries := ff.GetShows()
 
 	err := os.MkdirAll(config.Dest, fs.ModePerm)

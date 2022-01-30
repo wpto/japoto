@@ -11,19 +11,21 @@ import (
 	"github.com/pgeowng/japoto/types"
 )
 
-type FileSource struct{}
+type ChannelSource struct {
+	Srcpath string
+}
 
-func (src *FileSource) GetShows() []types.Entry {
+func (cs *ChannelSource) GetShows() []types.Entry {
 
-	data, err := ioutil.ReadFile(config.FileSourcePath)
+	data, err := ioutil.ReadFile(cs.Srcpath)
 	if err != nil {
-		log.Fatalf("error: read japoto.json: %s\n", err)
+		log.Fatalf("error: read %s: %s\n", cs.Srcpath, err)
 	}
 
 	s := make([]types.Entry, 0)
 	err = json.Unmarshal(data, &s)
 	if err != nil {
-		log.Fatalf("error: parse japoto.json: %s\n", err)
+		log.Fatalf("error: parse %s: %s\n", cs.Srcpath, err)
 	}
 
 	for idx := range s {

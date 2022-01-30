@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 
 	"github.com/pgeowng/japoto/config"
 	"github.com/pgeowng/japoto/types"
@@ -42,6 +43,10 @@ func (show Show) Print(entries []types.Entry) {
 
 	entries = FilterEntries(entries, func(entry types.Entry) bool {
 		return entry.ProgramName == show.Name && entry.Provider == show.Provider
+	})
+
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[i].Title > entries[j].Title
 	})
 
 	err = ts.Execute(f, map[string]interface{}{

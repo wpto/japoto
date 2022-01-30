@@ -6,10 +6,10 @@ import (
 	"github.com/pgeowng/japoto/types"
 )
 
-func FilterProvider(entries []types.Entry, targetProvider string) []types.Entry {
+func FilterEntries(entries []types.Entry, cond func(entry types.Entry) bool) []types.Entry {
 	filtered := make([]types.Entry, 0)
 	for _, ep := range entries {
-		if ep.Provider == targetProvider {
+		if cond(ep) {
 			filtered = append(filtered, ep)
 		}
 	}

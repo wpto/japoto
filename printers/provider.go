@@ -35,7 +35,9 @@ func (p Provider) Print(entries []types.Entry) {
 	}
 	defer f.Close()
 
-	entries = FilterProvider(entries, p.Name)
+	entries = FilterEntries(entries, func(entry types.Entry) bool {
+		return entry.Provider == p.Name
+	})
 	entries = UniqueRecentShows(entries)
 
 	alphabet := make(map[string][]types.Entry)

@@ -58,6 +58,13 @@ func main() {
 	r := printers.Recent{}
 	r.Print(entries)
 
+	pr := printers.Provider{Name: "hibiki"}
+	pr.Print(entries)
+	pr = printers.Provider{Name: "onsen"}
+	pr.Print(entries)
+	pr = printers.Provider{Name: "youtube"}
+	pr.Print(entries)
+
 	// renderIndex(db)
 	// renderAll(db)
 
@@ -71,23 +78,6 @@ func main() {
 }
 
 // func renderAll(db map[string]map[string][]Entry) {
-// 	files := []string{
-// 		"./template/base.layout.tmpl",
-// 		"./template/all.content.tmpl",
-// 	}
-
-// 	ts, err := template.ParseFiles(files...)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 		return
-// 	}
-
-// 	f, err := os.Create(filepath.Join(outputPrefix, "all.html"))
-// 	if err != nil {
-// 		log.Fatalln("index.html create error:", err)
-// 	}
-
-// 	defer f.Close()
 
 // 	alphabet := make(map[string]map[string][]string)
 // 	for provider, shows := range db {

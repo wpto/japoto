@@ -1,0 +1,18 @@
+{{ define "title" }}japoto{{ end }}
+{{ define "content" }}
+{{ $PublicURL := .PublicURL }}
+{{- range $letter, $eps := .Alphabet -}}
+<div class="kiosk">
+<ul class="kiosk__container">
+{{- range $ep := $eps -}}
+<li class="show-card">
+<a class="show-card__container" href="{{ $PublicURL }}/{{ $ep.Provider }}/{{ $ep.ProgramName }}.html">
+<img class="show-card__img" src="{{ $PublicURL }}/images/{{ $ep.Provider }}/{{ $ep.ProgramName }}.jpg">
+<h3 class="show-card__title">{{ $ep.ProgramName }}</h3>
+</a>
+</li>
+{{ end -}}
+</ul>
+</div>
+{{ end }}
+{{ end }}

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"regexp"
 
 	"github.com/pgeowng/japoto/config"
 	"github.com/pgeowng/japoto/namematch"
@@ -41,6 +42,16 @@ func (cs *ChannelSource) GetShows() []types.Entry {
 		s[idx].Date = info.Date
 		s[idx].ProgramName = info.ProgramName
 		s[idx].Provider = info.Provider
+
+		if len(s[idx].Title) == 0 {
+			s[idx].Title = fmt.Sprintf("%s %s", s[idx].Date, s[idx].ProgramName)
+		}
+
+		prefixTitleRE := regexp.MustCompile(`^(\d{6})`)
+		match := prefixTitleRE.FindStringSubmatch(s[idx].Title)
+		if len(match) == 0 {
+			s[idx].Title = fmt.Sprintf("%s %s", s[idx].Date, s[idx].Title)
+		}
 
 		s[idx].URL = config.ChannelPrefix + fmt.Sprint(s[idx].MessageId)
 		seconds := s[idx].Duration

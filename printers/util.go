@@ -25,7 +25,7 @@ func UniqueRecentShows(entries []types.Entry) []types.Entry {
 	filtered := make([]types.Entry, 0)
 	nameSet := make(map[string]bool)
 	for _, ep := range entries {
-		name := ep.ProgramName
+		name := ep.ShowId
 		if _, ok := nameSet[name]; !ok {
 			filtered = append(filtered, ep)
 			nameSet[name] = true

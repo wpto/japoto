@@ -6,9 +6,9 @@
 <ul class="kiosk__container">
 {{- range $ep := $eps -}}
 <li class="show-card">
-<a class="show-card__container" href="{{ $PublicURL }}/{{ $ep.Provider }}/{{ $ep.ProgramName }}.html">
-<img class="show-card__img" src="{{ $PublicURL }}/images/{{ $ep.Provider }}/{{ $ep.ProgramName }}.jpg">
-<h3 class="pin pin--bl">{{ $ep.ProgramName }}</h3>
+<a class="show-card__container" href="{{ $PublicURL }}/{{ $ep.Provider }}/{{ $ep.ShowId }}.html">
+<img class="show-card__img" src="{{ $PublicURL }}/images/{{ $ep.Provider }}/{{ $ep.ShowId }}.jpg">
+<h3 class="pin pin--bl">{{ $ep.ShowId }}</h3>
 </a>
 </li>
 {{ end -}}

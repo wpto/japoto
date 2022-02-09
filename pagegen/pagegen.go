@@ -10,15 +10,27 @@ import (
 
 	"github.com/pgeowng/japoto/config"
 	"github.com/pgeowng/japoto/printers"
-	"github.com/pgeowng/japoto/source"
+	"github.com/pgeowng/japoto/store"
 	"github.com/spf13/cobra"
 )
 
-func run(cmd *cobra.Command, args []string) {
-	ff := source.FileSource{
-		Srcpath: config.FileSourcePath,
+func Cmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "pages",
+		Short: "Generates public pages",
+		Long:  `reading db and outputs pages`,
+		Run:   run,
 	}
-	entries := ff.GetShows()
+
+	cmd.Flags().StringVarP(&config.PublicURL, "public-url", "p", "", "Prefix for urls")
+
+	return cmd
+}
+
+func run(cmd *cobra.Command, args []string) {
+
+	store := store.NewFileStore()
+	entries := store.Read()
 
 	err := os.MkdirAll(config.Dest, fs.ModePerm)
 	if err != nil {
@@ -51,7 +63,7 @@ func run(cmd *cobra.Command, args []string) {
 		if _, ok := arranged[ep.Provider]; !ok {
 			arranged[ep.Provider] = make(map[string]bool)
 		}
-		arranged[ep.Provider][ep.ProgramName] = true
+		arranged[ep.Provider][ep.ShowId] = true
 	}
 
 	r := printers.Recent{}
@@ -85,11 +97,3 @@ func run(cmd *cobra.Command, args []string) {
 
 }
 
-func Cmd() *cobra.Command {
-	return &cobra.Command{
-		Use:   "pages",
-		Short: "Generates public pages",
-		Long:  `reading db and outputs pages`,
-		Run:   run,
-	}
-}

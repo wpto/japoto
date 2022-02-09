@@ -1,23 +1,24 @@
 package types
 
 type Entry struct {
-	Size         int    `json:"size"`
-	MessageId    int    `json:"message_id"`
-	Title        string `json:"title"`
-	Duration     int    `json:"duration"`
-	Performer    string `json:"performer"`
-	Filename     string `json:"filename"`
-	Date         string `json:"date"`
-	ProgramName  string `json:"program_name"`
-	Provider     string `json:"provider"`
-	URL          string `json:"url"`
-	DurationTime string `json:"duration_human"`
-	SizeHuman    string `json:"size_human"`
-	HasImage     bool   `json:"has_image"`
+	Date          string `json:"date"`
+	Duration      int    `json:"duration"`
+	DurationHuman string `json:"duration_human"`
+	Filename      string `json:"filename"`
+	HasImage      bool   `json:"has_image"`
+	MessageId     int    `json:"message_id"`
+	Performer     string `json:"performer"`
+	Provider      string `json:"provider"`
+	ShowId        string `json:"show_id"`
+	Size          int    `json:"size"`
+	SizeHuman     string `json:"size_human"`
+	Title         string `json:"title"`
+	URL           string `json:"url"`
 }
 
 type Source interface {
-	GetShows() []Entry
+	Read() []Entry
+	Write([]Entry)
 }
 
 type Printer interface {

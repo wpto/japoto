@@ -9,9 +9,9 @@ import (
 )
 
 type EpInfo struct {
-	Date        string
-	ProgramName string
-	Provider    string
+	Date     string
+	ShowId   string
+	Provider string
 }
 
 type Matcher struct {

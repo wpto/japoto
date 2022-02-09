@@ -42,7 +42,7 @@ func (show Show) Print(entries []types.Entry) {
 	defer f.Close()
 
 	entries = FilterEntries(entries, func(entry types.Entry) bool {
-		return entry.ProgramName == show.Name && entry.Provider == show.Provider
+		return entry.ShowId == show.Name && entry.Provider == show.Provider
 	})
 
 	sort.Slice(entries, func(i, j int) bool {

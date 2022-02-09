@@ -42,7 +42,7 @@ func (p Provider) Print(entries []types.Entry) {
 
 	alphabet := make(map[string][]types.Entry)
 	for _, ep := range entries {
-		programName := ep.ProgramName
+		programName := ep.ShowId
 		if len(programName) == 0 {
 			log.Fatalf("programName zero\n %v", ep)
 		}
@@ -57,7 +57,7 @@ func (p Provider) Print(entries []types.Entry) {
 
 	for _, eps := range alphabet {
 		sort.Slice(eps, func(i, j int) bool {
-			return strings.ToLower(eps[i].ProgramName) < strings.ToLower(eps[j].ProgramName)
+			return strings.ToLower(eps[i].ShowId) < strings.ToLower(eps[j].ShowId)
 		})
 	}
 

@@ -1,4 +1,4 @@
-package namematch
+package expanddb
 
 import (
 	"fmt"
@@ -115,7 +115,7 @@ var matchers = []Matcher{
 	},
 }
 
-func ExtractInfo(filename string) (info EpInfo, err error) {
+func GuessMeta(filename string) (info EpInfo, err error) {
 	for _, matcher := range matchers {
 		match := matcher.RE.FindStringSubmatch(filename)
 		if len(match) != 0 {

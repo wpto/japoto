@@ -6,7 +6,6 @@ import (
 	"regexp"
 
 	"github.com/pgeowng/japoto/config"
-	"github.com/pgeowng/japoto/namematch"
 	"github.com/pgeowng/japoto/store"
 	"github.com/pgeowng/japoto/types"
 	"github.com/spf13/cobra"
@@ -27,6 +26,7 @@ func run(cmd *cobra.Command, args []string) {
 
 	entries := store.Read()
 	entries = ExtendContent(entries)
+	// entries = ExtendPerformers(entries)
 	store.Write(entries)
 	log.Println("Done")
 }
@@ -57,7 +57,7 @@ func ExtendContent(eps []types.Entry) []types.Entry {
 		eps[idx].Date = "000000"
 		eps[idx].ShowId = "unknown"
 
-		info, err := namematch.ExtractInfo(eps[idx].Filename)
+		info, err := GuessMeta(eps[idx].Filename)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -84,5 +84,17 @@ func ExtendContent(eps []types.Entry) []types.Entry {
 		eps[idx].SizeHuman = HumanSize(eps[idx].Size)
 	}
 
+	return eps
+}
+
+func ExtendPerformers(eps []types.Entry) []types.Entry {
+	for idx := range eps {
+		info, err := GuessPerformers(eps[idx].Performer)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Printf("ok: %v\n", info)
+		}
+	}
 	return eps
 }

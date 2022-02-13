@@ -49,8 +49,8 @@ func (fs *FileStore) Read() []types.Entry {
 
 func (fs *FileStore) Write(eps []types.Entry) {
 
-
-	tmpdir := filepath.Join(filepath.Dir(fs.dir), "__")
+	pardir := filepath.Dir(fs.dir)
+	tmpdir := filepath.Join(pardir, "__")
 
 	err := os.Mkdir(tmpdir, 0755)
 	if err != nil {

@@ -16,6 +16,13 @@ type Entry struct {
 	URL           string `json:"url"`
 }
 
+// Performers    []Person `json:"performers"`
+type Person struct {
+	IsGuest   bool    `json:"is_guest"`
+	Name      string  `json:"name"`
+	Character *string `json:"character"`
+}
+
 type Source interface {
 	Read() []Entry
 	Write([]Entry)

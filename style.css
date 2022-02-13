@@ -208,11 +208,11 @@ a:focus {
 .ep {
   background-color: #e8d4ff;
   padding: 8px;
+  &:nth-child(2n) {
+    background-color: #f0e0ff;
+  }
 }
 
-.ep:nth-child(2n) {
-  background-color: #f0e0ff;
-}
 
 .ep__row {
   display: flex;

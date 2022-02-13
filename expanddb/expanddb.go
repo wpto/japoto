@@ -22,7 +22,7 @@ func Cmd() *cobra.Command {
 
 func run(cmd *cobra.Command, args []string) {
 
-	store := store.NewFileStore()
+	store := store.NewFileStore(config.FileStorePath)
 
 	entries := store.Read()
 	entries = ExtendContent(entries)

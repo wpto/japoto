@@ -48,8 +48,9 @@ func (r Recent) Print(entries []types.Entry) {
 	}
 
 	err = ts.Execute(f, map[string]interface{}{
-		"PublicURL": config.PublicURL,
-		"Recent":    &recent,
+		"PublicURL":  config.PublicURL,
+		"CreateTime": config.CreateTime,
+		"Recent":     &recent,
 	})
 
 	if err != nil {

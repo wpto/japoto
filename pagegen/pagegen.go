@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/pgeowng/japoto/config"
+	"github.com/pgeowng/japoto/expanddb"
 	"github.com/pgeowng/japoto/printers"
 	"github.com/pgeowng/japoto/store"
 	"github.com/spf13/cobra"
@@ -29,8 +30,10 @@ func Cmd() *cobra.Command {
 
 func run(cmd *cobra.Command, args []string) {
 
-	store := store.NewFileStore()
+	store := store.NewFileStore(config.FileStorePath)
 	entries := store.Read()
+
+	entries = expanddb.ExtendContent(entries)
 
 	err := os.MkdirAll(config.Dest, fs.ModePerm)
 	if err != nil {
@@ -96,4 +99,3 @@ func run(cmd *cobra.Command, args []string) {
 	// }
 
 }
-

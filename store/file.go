@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 	"sort"
 
-	"github.com/pgeowng/japoto/config"
 	"github.com/pgeowng/japoto/types"
 )
 
@@ -17,8 +16,8 @@ type FileStore struct {
 	dir string
 }
 
-func NewFileStore() *FileStore {
-	return &FileStore{dir: config.FileStorePath}
+func NewFileStore(dir string) *FileStore {
+	return &FileStore{dir}
 }
 
 func (fs *FileStore) Read() []types.Entry {

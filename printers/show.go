@@ -50,10 +50,11 @@ func (show Show) Print(entries []types.Entry) {
 	})
 
 	err = ts.Execute(f, map[string]interface{}{
-		"PublicURL": config.PublicURL,
-		"Provider":  show.Provider,
-		"ShowName":  show.Name,
-		"Entries":   entries,
+		"PublicURL":  config.PublicURL,
+		"CreateTime": config.CreateTime,
+		"Provider":   show.Provider,
+		"ShowName":   show.Name,
+		"Entries":    entries,
 	})
 
 	if err != nil {

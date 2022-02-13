@@ -62,8 +62,9 @@ func (p Provider) Print(entries []types.Entry) {
 	}
 
 	err = ts.Execute(f, map[string]interface{}{
-		"PublicURL": config.PublicURL,
-		"Alphabet":  &alphabet,
+		"PublicURL":  config.PublicURL,
+		"CreateTime": config.CreateTime,
+		"Alphabet":   &alphabet,
 	})
 	if err != nil {
 		log.Fatalf("%s. write error: %v\n", fpath, err)

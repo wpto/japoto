@@ -1,6 +1,6 @@
 const gulp = require('gulp')
 const bs = require('browser-sync').create()
-const sass = require('gulp-sass')(require('node-sass'))
+const sass = require('gulp-sass')(require('sass'))
 const run = require('gulp-run')
 
 const path = require('path')

@@ -1,4 +1,4 @@
-package expanddb
+package main
 
 import (
 	"fmt"

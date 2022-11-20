@@ -1,4 +1,4 @@
-package expanddb
+package main
 
 import (
 	"fmt"
@@ -39,7 +39,7 @@ func TryCharacter(match [][]string) ([]types.Person, error) {
 	for idx, p := range match {
 		word := p[1]
 		if CheckObjectObject(word) {
-			fmt.Printf("ch: has obj: %s", word[0])
+			fmt.Printf("ch: has obj: %s", word)
 		}
 		if idx%2 == 0 {
 			last.Name = word

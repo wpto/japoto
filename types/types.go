@@ -1,5 +1,19 @@
 package types
 
+type ArchiveEntry struct {
+	Size      int    `json:"size"`
+	MessageID int    `json:"message_id"`
+	Duration  int    `json:"duration"`
+	Title     string `json:"title"`
+	Performer string `json:"performer"`
+	Filename  string `json:"filename"`
+	Date      string `json:"date"`
+	ShowID    string `json:"show_id"`
+	Source    string `json:"source"`
+	EpTitle   string `json:"ep_title"`
+	PartIdx   int    `json:"part_idx"`
+}
+
 type Entry struct {
 	Date          string `json:"date"`
 	Duration      int    `json:"duration"`

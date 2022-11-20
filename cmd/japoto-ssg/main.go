@@ -1,57 +1,70 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
+	"sort"
+	"time"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/pgeowng/japoto/pkg/archive"
+	"github.com/pgeowng/japoto/pkg/entity"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
+var arch *archive.Archive
+
 func main() {
+
+	a, err := archive.NewArchive()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	arch = a
 
 	router := httprouter.New()
 	router.GET("/", index)
+	router.GET("/recent", ShowHandler)
+	router.ServeFiles("/static/*filepath", http.Dir("static"))
 
 	fmt.Println("Listening on :8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
 func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	db, err := sql.Open("sqlite3", "../japoto-dl/japoto-archive.db")
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	defer db.Close()
-
-	rows, err := db.Query("select key, msg_id, size, duration from channel order by msg_id desc")
+	entries, err := arch.QueryAllEpisodes()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	result := make([]ChannelEntry, 0)
-	for rows.Next() {
-		var entry ChannelEntry
-		size := &entry.Size
-		duration := &entry.Duration
-		err := rows.Scan(&entry.Key, &entry.MsgID, &size, &duration)
-		if err != nil {
-			log.Fatal(err)
-		}
-		if size != nil {
-			entry.Size = *size
-		}
-		if duration != nil {
-			entry.Duration = *duration
-		}
+	for _, e := range entries {
 
-		entry.SizeHuman = FormatSize(entry.Size)
-		entry.DurationHuman = FormatDuration(entry.Duration)
+		/*
+			var entry ChannelEntry
+			size := &entry.Size
+			duration := &entry.Duration
+
+				entry.Size = *size
+
+				entry.Duration = *duration
+
+			entry.SizeHuman = FormatSize(entry.Size)
+			entry.DurationHuman = FormatDuration(entry.Duration)
+		*/
+		entry := ChannelEntry{
+			Key:           e.ShowID,
+			MsgID:         e.MessageID,
+			Size:          e.Size,
+			Duration:      e.Duration,
+			SizeHuman:     entity.FormatSize(e.Size),
+			DurationHuman: entity.FormatDuration(e.Duration),
+		}
 		result = append(result, entry)
 	}
 
@@ -75,6 +88,44 @@ func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 }
 
+func ShowHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+
+	ts, err := template.ParseFiles("template/base.layout.html", "template/show.content.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	entries, err := arch.QueryAllEpisodes()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//entries = entries[8000:8005]
+
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[j].MessageID <= entries[i].MessageID &&
+			entries[j].ShowID <= entries[i].ShowID &&
+			entries[j].Date <= entries[i].Date
+	})
+
+	renderData := make([]entity.EpisodeRender, len(entries))
+	for i, e := range entries {
+		fmt.Println(e)
+		renderData[i] = e.Render("https://t.me/japoto/%d")
+	}
+
+	fmt.Println(renderData)
+
+	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
+	err = ts.Execute(w, map[string]interface{}{
+		"PublicURL":  ".",
+		"CreateTime": time.Now(),
+		"Provider":   "all",
+		"ShowName":   "all",
+		"Episodes":   renderData,
+	})
+}
+
 type ChannelEntry struct {
 	Key           string `json:"key"`
 	MsgID         int    `json:"msg_id"`
@@ -82,24 +133,4 @@ type ChannelEntry struct {
 	Duration      int    `json:"duration"`
 	SizeHuman     string `json:"size_human"`
 	DurationHuman string `json:"duration_human"`
-}
-
-func FormatSize(size int) string {
-	if size < 1024 {
-		return fmt.Sprintf("%d B", size)
-	} else if size < 1024*1024 {
-		return fmt.Sprintf("%.2f KiB", float64(size)/1024)
-	} else if size < 1024*1024*1024 {
-		return fmt.Sprintf("%.2f MiB", float64(size)/1024/1024)
-	} else {
-		return fmt.Sprintf("%.2f GiB", float64(size)/1024/1024/1024)
-	}
-}
-
-func FormatDuration(duration int) string {
-	if duration < 60*60 {
-		return fmt.Sprintf("%02d:%02d", duration/60, duration%60)
-	} else {
-		return fmt.Sprintf("%d:%02d:%02d", duration/60/60, duration/60%60, duration%60)
-	}
 }

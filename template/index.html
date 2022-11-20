@@ -1,0 +1,36 @@
+<style>
+  body {
+    background: #070707;
+    color: #cfcfcf;
+
+    font-size: 10pt;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    min-height: 100%;
+  }
+
+  .list-entry {
+    background-color: #1d1d1d;
+    padding: 0.3em 0.5em;
+    clear: both;
+  }
+  .dur,
+  .size,
+  .chid {
+    text-align: right;
+    float: right;
+    width: 55pt;
+    white-space: nowrap;
+  }
+</style>
+<div>
+  {{- range . -}}
+  <div class="list-entry">
+    <div class="fname">{{.Key}}</div>
+    <div class="chid">{{.MsgID}}</div>
+    <div class="size">{{.SizeHuman}}</div>
+    <div class="dur">{{.DurationHuman}}</div>
+  </div>
+  {{- end -}}
+</div>
